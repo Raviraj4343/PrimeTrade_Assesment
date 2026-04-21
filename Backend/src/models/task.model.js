@@ -6,12 +6,14 @@ const taskSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      maxlength: 150
     },
     description: {
       type: String,
       trim: true,
-      default: ''
+      default: '',
+      maxlength: 1000
     },
     status: {
       type: String,
@@ -32,6 +34,7 @@ const taskSchema = new mongoose.Schema(
 );
 
 taskSchema.index({ user: 1, createdAt: -1 });
+taskSchema.index({ title: 'text', description: 'text' });
 
 const Task = mongoose.model('Task', taskSchema);
 
