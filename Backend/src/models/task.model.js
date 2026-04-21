@@ -29,12 +29,23 @@ const taskSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    versionKey: false
+    versionKey: false,
+    toJSON: {
+      virtuals: true
+    },
+    toObject: {
+      virtuals: true
+    }
   }
 );
 
 taskSchema.index({ user: 1, createdAt: -1 });
-taskSchema.index({ title: 'text', description: 'text' });
+taskSchema.index({ user: 1, status: 1, createdAt: -1 });
+taskSchema.index({ status: 1, createdAt: -1 });
+
+taskSchema.virtual('isCompleted').get(function isCompleted() {
+  return this.status === constants.taskStatus.COMPLETED;
+});
 
 const Task = mongoose.model('Task', taskSchema);
 
