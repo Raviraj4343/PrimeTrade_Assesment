@@ -185,3 +185,5 @@ Task routes:
 ## License
 
 MIT
+
+## Assignment Submission for PrimetradeAI Backend Developer Internship
