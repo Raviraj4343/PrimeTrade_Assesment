@@ -30,9 +30,21 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    versionKey: false
+    versionKey: false,
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        delete ret.password;
+        return ret;
+      }
+    },
+    toObject: {
+      virtuals: true
+    }
   }
 );
+
+userSchema.index({ email: 1 }, { unique: true });
 
 userSchema.pre('save', async function preSave(next) {
   if (!this.isModified('password')) {
@@ -47,11 +59,11 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword)
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-userSchema.set('toJSON', {
-  transform: (doc, ret) => {
-    delete ret.password;
-    return ret;
-  }
+userSchema.virtual('taskCount', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'user',
+  count: true
 });
 
 const User = mongoose.model('User', userSchema);

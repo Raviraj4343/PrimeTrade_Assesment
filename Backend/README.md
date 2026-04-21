@@ -11,6 +11,7 @@ Production-ready REST API built with Node.js, Express, MongoDB, and Mongoose. It
 - Role-based access control for `user` and `admin`
 - Task CRUD with owner-only access for users and full visibility for admins
 - Task list filtering, searching, sorting, and pagination
+- Query-aware MongoDB indexing and selective Mongoose virtuals
 - Joi request validation
 - Security middleware with `cors`, `helmet`, `hpp`, `cookie-parser`, and `express-rate-limit`
 - Centralized constants and error handling
@@ -117,6 +118,13 @@ Successful responses follow a predictable structure:
   "data": {}
 }
 ```
+
+## Mongoose Design Notes
+
+- `User.email` is uniquely indexed for reliable authentication lookups
+- `Task` uses compound indexes that match the main access patterns: owner-based listing, status filtering, and recent-first sorting
+- `User.taskCount` is implemented as a virtual populate for lightweight dashboard/profile metadata
+- `Task.isCompleted` is exposed as a computed virtual instead of storing redundant state
 
 Validation and error responses are centralized and return:
 
