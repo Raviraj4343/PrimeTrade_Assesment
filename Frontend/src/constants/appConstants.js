@@ -2,7 +2,9 @@ export const APP_NAME = 'PrimeTrade';
 export const TOKEN_KEY = 'primeTradeToken';
 
 const normalizeApiBaseUrl = (rawValue) => {
-  const fallback = 'http://localhost:5000/api/v1';
+  const fallback = import.meta.env.PROD
+    ? 'https://ptai-xlvm.onrender.com/api/v1'
+    : 'http://localhost:5000/api/v1';
 
   if (!rawValue || typeof rawValue !== 'string') {
     return fallback;
