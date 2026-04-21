@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PrimeTrade Task Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/styles/main.css" />
+  </head>
+  <body>
+    <div class="background-shape background-shape-one"></div>
+    <div class="background-shape background-shape-two"></div>
+
+    <main class="app-shell">
+      <section class="hero-card">
+        <p class="eyebrow">PrimeTrade Assessment</p>
+        <h1>Task API Console</h1>
+        <p class="hero-copy">
+          A lightweight frontend to verify authentication, RBAC, and task CRUD against the
+          Node.js + Express backend.
+        </p>
+
+        <div class="api-config">
+          <label for="apiBaseUrl">API Base URL</label>
+          <input id="apiBaseUrl" type="url" placeholder="http://localhost:5000/api/v1" />
+          <button id="saveApiBaseUrl" class="secondary-button">Save Endpoint</button>
+        </div>
+
+        <div class="status-panel">
+          <span class="status-dot"></span>
+          <div>
+            <p class="status-label">Connection Status</p>
+            <p id="connectionStatus">Waiting for configuration</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Authentication</p>
+              <h2>Access</h2>
+            </div>
+            <button id="logoutButton" class="ghost-button" disabled>Logout</button>
+          </div>
+
+          <div class="auth-layout">
+            <form id="registerForm" class="stack-form">
+              <h3>Create Account</h3>
+              <input name="name" type="text" placeholder="Full name" required />
+              <input name="email" type="email" placeholder="Email address" required />
+              <input name="password" type="password" placeholder="Password" required />
+              <button type="submit">Register</button>
+            </form>
+
+            <form id="loginForm" class="stack-form">
+              <h3>Sign In</h3>
+              <input name="email" type="email" placeholder="Email address" required />
+              <input name="password" type="password" placeholder="Password" required />
+              <button type="submit">Login</button>
+            </form>
+          </div>
+
+          <div class="profile-card">
+            <p class="section-kicker">Current Session</p>
+            <pre id="currentUser">No active session</pre>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Task Management</p>
+              <h2>Workbench</h2>
+            </div>
+            <button id="refreshTasksButton" class="ghost-button" disabled>Refresh</button>
+          </div>
+
+          <form id="taskForm" class="stack-form">
+            <h3 id="taskFormTitle">Create Task</h3>
+            <input id="taskId" type="hidden" />
+            <input id="title" name="title" type="text" placeholder="Task title" required />
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              placeholder="Task description"
+            ></textarea>
+            <select id="status" name="status">
+              <option value="todo">Todo</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+            <div class="inline-actions">
+              <button type="submit">Save Task</button>
+              <button id="cancelEditButton" type="button" class="secondary-button" hidden>
+                Cancel Edit
+              </button>
+            </div>
+          </form>
+
+          <form id="filtersForm" class="filters-row">
+            <input id="searchInput" type="search" placeholder="Search tasks" />
+            <select id="statusFilter">
+              <option value="">All statuses</option>
+              <option value="todo">Todo</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+            <select id="sortFilter">
+              <option value="latest">Latest</option>
+              <option value="oldest">Oldest</option>
+            </select>
+            <button type="submit" class="secondary-button">Apply</button>
+          </form>
+
+          <div id="tasksMeta" class="tasks-meta">Sign in to view tasks.</div>
+          <div id="tasksList" class="task-list"></div>
+        </article>
+      </section>
+
+      <section class="panel log-panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-kicker">Request Log</p>
+            <h2>Responses</h2>
+          </div>
+          <button id="clearLogButton" class="ghost-button">Clear</button>
+        </div>
+        <pre id="responseLog">Ready.</pre>
+      </section>
+    </main>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
