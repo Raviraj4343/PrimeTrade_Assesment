@@ -66,11 +66,19 @@ COOKIE_EXPIRES_IN_DAYS=1
 BCRYPT_SALT_ROUNDS=10
 ```
 
+For local frontend development, you can also allow multiple origins:
+
+```env
+CLIENT_URL=http://localhost:5173,http://127.0.0.1:5173,http://localhost:5500,http://127.0.0.1:5500
+```
+
 4. Run the app:
 
 ```bash
 npm run dev
 ```
+
+`npm run dev` uses Node's built-in watch mode, so it works without the Windows `nodemon` spawn issue.
 
 ## Health and Docs
 

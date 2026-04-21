@@ -41,30 +41,42 @@ const TaskForm = ({ activeTask, onCancelEdit, onSave, isSubmitting }) => {
         </div>
       </div>
 
-      <input
-        name="title"
-        placeholder="Task title"
-        value={formState.title}
-        onChange={(event) => setFormState({ ...formState, title: event.target.value })}
-      />
-      <textarea
-        name="description"
-        placeholder="Task description"
-        rows="5"
-        value={formState.description}
-        onChange={(event) => setFormState({ ...formState, description: event.target.value })}
-      />
-      <select
-        name="status"
-        value={formState.status}
-        onChange={(event) => setFormState({ ...formState, status: event.target.value })}
-      >
-        {TASK_STATUSES.map((status) => (
-          <option key={status} value={status}>
-            {status}
-          </option>
-        ))}
-      </select>
+      <label className="task-field" htmlFor="task-title">
+        <span className="task-field-label">Title</span>
+        <input
+          id="task-title"
+          name="title"
+          placeholder="Task title"
+          value={formState.title}
+          onChange={(event) => setFormState({ ...formState, title: event.target.value })}
+        />
+      </label>
+      <label className="task-field" htmlFor="task-description">
+        <span className="task-field-label">Description</span>
+        <textarea
+          id="task-description"
+          name="description"
+          placeholder="Task description"
+          rows="6"
+          value={formState.description}
+          onChange={(event) => setFormState({ ...formState, description: event.target.value })}
+        />
+      </label>
+      <label className="task-field" htmlFor="task-status">
+        <span className="task-field-label">Status</span>
+        <select
+          id="task-status"
+          name="status"
+          value={formState.status}
+          onChange={(event) => setFormState({ ...formState, status: event.target.value })}
+        >
+          {TASK_STATUSES.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
+      </label>
 
       <div className="inline-actions">
         <button disabled={isSubmitting} type="submit">

@@ -13,6 +13,26 @@ const initialFilters = {
   sort: 'latest'
 };
 
+const buildTaskQuery = (filters) => {
+  const params = {
+    page: 1,
+    limit: 10,
+    sort: filters.sort || 'latest'
+  };
+
+  const trimmedSearch = filters.search.trim();
+
+  if (trimmedSearch) {
+    params.search = trimmedSearch;
+  }
+
+  if (filters.status) {
+    params.status = filters.status;
+  }
+
+  return params;
+};
+
 const DashboardPage = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
@@ -28,11 +48,7 @@ const DashboardPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await taskService.list({
-        page: 1,
-        limit: 10,
-        ...filters
-      });
+      const response = await taskService.list(buildTaskQuery(filters));
 
       setTasks(response.data.data.items);
       setPagination(response.data.data.pagination);
