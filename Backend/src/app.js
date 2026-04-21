@@ -13,7 +13,27 @@ import { errorHandler, notFoundHandler } from './middleware/error.middleware.js'
 import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
-const allowedOrigins = constants.config.clientUrl.split(',').map((origin) => origin.trim());
+const normalizeOrigin = (origin) => {
+  try {
+    return new URL(origin).origin;
+  } catch {
+    return origin.trim();
+  }
+};
+
+const defaultDevOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500'
+];
+
+const allowedOrigins = [...constants.config.clientUrl.split(','), ...defaultDevOrigins]
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+  .map(normalizeOrigin);
+
+const allowedOriginSet = new Set(allowedOrigins);
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: constants.config.nodeEnv === 'production' ? 100 : 1000,
@@ -29,7 +49,7 @@ app.use(helmet());
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOriginSet.has(normalizeOrigin(origin))) {
         return callback(null, true);
       }
 

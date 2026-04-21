@@ -21,7 +21,9 @@ const constants = {
     jwtSecret: process.env.JWT_SECRET || 'change-me-in-production',
     jwtExpiresIn: process.env.JWT_EXPIRES_IN || '1d',
     swaggerServerUrl: process.env.SWAGGER_SERVER_URL || 'http://localhost:5000',
-    clientUrl: process.env.CLIENT_URL || 'http://127.0.0.1:5500',
+    clientUrl:
+      process.env.CLIENT_URL ||
+      'http://localhost:5173,http://127.0.0.1:5173,http://localhost:5500,http://127.0.0.1:5500',
     cookieName: process.env.COOKIE_NAME || 'prime_trade_token',
     cookieExpiresInDays: Number(process.env.COOKIE_EXPIRES_IN_DAYS) || 1,
     bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) || 10
