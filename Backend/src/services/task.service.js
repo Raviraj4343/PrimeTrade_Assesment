@@ -52,7 +52,11 @@ export const getTasks = async (user, filters) => {
   const query = buildTaskListQuery(user, filters);
 
   const [tasks, total] = await Promise.all([
-    Task.find(query).sort(sort).skip(skip).limit(limit).populate('user', 'name email role'),
+    Task.find(query)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .populate('user', 'name email role'),
     Task.countDocuments(query)
   ]);
 
