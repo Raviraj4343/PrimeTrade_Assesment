@@ -45,11 +45,28 @@ export const createTask = async (payload, user) =>
   });
 
 export const getTasks = async (user, filters) => {
+  const isAdminAllMode = user.role === constants.roles.ADMIN && filters.all === true;
   const page = Number(filters.page || 1);
   const limit = Number(filters.limit || 10);
   const skip = (page - 1) * limit;
   const sort = filters.sort === 'oldest' ? { createdAt: 1 } : { createdAt: -1 };
   const query = buildTaskListQuery(user, filters);
+
+  if (isAdminAllMode) {
+    const tasks = await Task.find(query)
+      .sort(sort)
+      .populate('user', 'name email role');
+
+    return {
+      items: tasks,
+      pagination: {
+        page: 1,
+        limit: tasks.length || 1,
+        total: tasks.length,
+        totalPages: 1
+      }
+    };
+  }
 
   const [tasks, total] = await Promise.all([
     Task.find(query)

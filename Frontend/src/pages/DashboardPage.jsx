@@ -13,12 +13,18 @@ const initialFilters = {
   sort: 'latest'
 };
 
-const buildTaskQuery = (filters) => {
+const buildTaskQuery = (filters, options = {}) => {
+  const { isAdmin = false } = options;
+
   const params = {
     page: 1,
     limit: 10,
     sort: filters.sort || 'latest'
   };
+
+  if (isAdmin) {
+    params.all = true;
+  }
 
   const trimmedSearch = filters.search.trim();
 
@@ -35,6 +41,7 @@ const buildTaskQuery = (filters) => {
 
 const DashboardPage = () => {
   const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [tasks, setTasks] = useState([]);
   const [filters, setFilters] = useState(initialFilters);
   const [activeTask, setActiveTask] = useState(null);
@@ -48,7 +55,7 @@ const DashboardPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await taskService.list(buildTaskQuery(filters));
+      const response = await taskService.list(buildTaskQuery(filters, { isAdmin }));
 
       setTasks(response.data.data.items);
       setPagination(response.data.data.pagination);
@@ -119,7 +126,11 @@ const DashboardPage = () => {
           <div>
             <p className="eyebrow">Dashboard</p>
             <h1 className="dashboard-title">Welcome, {user?.name}</h1>
-            <p className="hero-copy">Manage your tasks with a simple authenticated workflow.</p>
+            <p className="hero-copy">
+              {isAdmin
+                ? 'Admin mode: you can view, edit, and delete tasks across the platform.'
+                : 'Manage your tasks with a simple authenticated workflow.'}
+            </p>
           </div>
 
           <div className="profile-card compact-profile">
@@ -181,7 +192,9 @@ const DashboardPage = () => {
                 <div>
                   <p className="section-kicker">Task Feed</p>
                   <p className="tasks-meta">
-                    Showing {tasks.length} of {pagination.total} task(s)
+                    {isAdmin
+                      ? `Admin view: showing ${tasks.length} of ${pagination.total} platform task(s)`
+                      : `Showing ${tasks.length} of ${pagination.total} task(s)`}
                   </p>
                 </div>
                 <p className="task-total">{pagination.total} tasks</p>

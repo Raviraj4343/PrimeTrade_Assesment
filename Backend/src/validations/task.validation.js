@@ -22,6 +22,7 @@ export const mongoIdParamSchema = Joi.object({
 export const taskQuerySchema = Joi.object({
   page: Joi.number().integer().min(1).default(1),
   limit: Joi.number().integer().min(1).max(100).default(10),
+  all: Joi.boolean().truthy('true').falsy('false').default(false),
   status: Joi.string().valid(...Object.values(constants.taskStatus)),
   search: Joi.string().trim().allow(''),
   sort: Joi.string().valid('latest', 'oldest').default('latest')
