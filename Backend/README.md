@@ -1,19 +1,22 @@
 # PrimeTrade Backend API
 
-Production-ready REST API built with Node.js, Express, MongoDB, and Mongoose. It includes JWT authentication, role-based access control, task CRUD, request validation, Swagger docs, and a scalable folder structure.
+Production-ready REST API built with Node.js, Express, MongoDB, and Mongoose. It includes JWT authentication, secure cookie support, role-based access control, task CRUD, request validation, Swagger docs, and a scalable folder structure aligned with industry-style service layering.
 
 ## Features
 
 - ES module-based Node.js + Express backend
 - MongoDB with Mongoose schema models
 - JWT authentication with bcrypt password hashing
+- HTTP-only auth cookie support with Bearer token fallback
 - Role-based access control for `user` and `admin`
-- Task CRUD with owner-only access for users
+- Task CRUD with owner-only access for users and full visibility for admins
+- Task list filtering, searching, sorting, and pagination
 - Joi request validation
 - Security middleware with `cors`, `helmet`, `hpp`, `cookie-parser`, and `express-rate-limit`
 - Centralized constants and error handling
 - Swagger UI documentation
 - Environment-based configuration with `dotenv`
+- Frontend-friendly API responses for easier integration
 
 ## Folder Structure
 
@@ -56,6 +59,10 @@ MONGO_URI=mongodb://127.0.0.1:27017/prime-trade
 JWT_SECRET=replace_with_a_strong_secret
 JWT_EXPIRES_IN=1d
 SWAGGER_SERVER_URL=http://localhost:5000
+CLIENT_URL=http://127.0.0.1:5500
+COOKIE_NAME=prime_trade_token
+COOKIE_EXPIRES_IN_DAYS=1
+BCRYPT_SALT_ROUNDS=10
 ```
 
 4. Run the app:
@@ -64,15 +71,15 @@ SWAGGER_SERVER_URL=http://localhost:5000
 npm run dev
 ```
 
+## Health and Docs
+
+- Health: `GET /health`
+- API root: `GET /api/v1`
+- Swagger UI: `GET /api-docs`
+
 ## API Base URL
 
 `/api/v1`
-
-## Swagger Documentation
-
-Visit:
-
-`/api-docs`
 
 ## Main Endpoints
 
@@ -80,11 +87,13 @@ Visit:
 
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
+- `GET /api/v1/auth/me`
+- `POST /api/v1/auth/logout`
 - `GET /api/v1/auth/admin-only`
 
 ### Tasks
 
-- `GET /api/v1/tasks`
+- `GET /api/v1/tasks?page=1&limit=10&status=todo&search=ship&sort=latest`
 - `POST /api/v1/tasks`
 - `GET /api/v1/tasks/:id`
 - `PATCH /api/v1/tasks/:id`
@@ -96,6 +105,28 @@ Visit:
 - `admin` can view, update, and delete all tasks
 - public registration creates `user` accounts only
 - bootstrap admin users through a protected seed/admin flow or directly in MongoDB
+
+## Response Shape
+
+Successful responses follow a predictable structure:
+
+```json
+{
+  "success": true,
+  "message": "Tasks fetched successfully",
+  "data": {}
+}
+```
+
+Validation and error responses are centralized and return:
+
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "details": []
+}
+```
 
 ## Sample Register Payload
 
@@ -117,12 +148,24 @@ Visit:
 }
 ```
 
-## Production Notes
+## Frontend Integration
+
+The repository includes a simple client in `Frontend/` that can:
+
+- register and login users
+- fetch the current session via `/auth/me`
+- create, update, delete, and filter tasks
+- display raw API responses for quick testing
+
+Set `CLIENT_URL` in the backend `.env` to the origin where the frontend is served.
+
+## Security Notes
 
 - Store a strong `JWT_SECRET` outside version control
 - Use managed MongoDB, structured logging, and secret management in production
-- Tighten CORS origins in production instead of using dynamic origin reflection
-- Add rate limiting, refresh token strategy, and CI-based test coverage for hardening
+- Tighten `CLIENT_URL` to known frontend origins in production
+- Prefer secure cookies over local token storage in production browser apps
+- Add refresh token rotation, audit logs, and CI-based automated tests for further hardening
 
 ## Scalability Ideas
 
