@@ -8,6 +8,7 @@ const sanitizeUser = (user) => ({
   name: user.name,
   email: user.email,
   role: user.role,
+  taskCount: user.taskCount ?? 0,
   createdAt: user.createdAt,
   updatedAt: user.updatedAt
 });
@@ -32,7 +33,7 @@ export const registerUser = async ({ name, email, password }) => {
 };
 
 export const getCurrentUser = async (userId) => {
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).populate('taskCount');
 
   if (!user) {
     throw new ApiError(constants.statusCodes.UNAUTHORIZED, constants.messages.AUTH.TOKEN_INVALID);
