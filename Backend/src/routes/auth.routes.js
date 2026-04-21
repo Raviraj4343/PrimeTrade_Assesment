@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { login, register } from '../controllers/auth.controller.js';
+import { getMe, login, logout, register } from '../controllers/auth.controller.js';
 import constants from '../constants/constant.js';
 import { authenticate, authorize } from '../middleware/auth.middleware.js';
 import { validate } from '../middleware/validate.middleware.js';
@@ -56,6 +56,8 @@ router.post('/register', validate(registerSchema), register);
  *         description: Login successful
  */
 router.post('/login', validate(loginSchema), login);
+router.get('/me', authenticate, getMe);
+router.post('/logout', authenticate, logout);
 
 /**
  * @swagger

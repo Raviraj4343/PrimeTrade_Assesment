@@ -13,6 +13,7 @@ import { errorHandler, notFoundHandler } from './middleware/error.middleware.js'
 import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
+const allowedOrigins = constants.config.clientUrl.split(',').map((origin) => origin.trim());
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: constants.config.nodeEnv === 'production' ? 100 : 1000,
@@ -27,7 +28,13 @@ const apiLimiter = rateLimit({
 app.use(helmet());
 app.use(
   cors({
-    origin: true,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
   })
 );
