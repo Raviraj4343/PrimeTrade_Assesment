@@ -5,15 +5,17 @@ import { verifyToken } from '../utils/jwt.js';
 
 export const authenticate = async (req, res, next) => {
   const authHeader = req.headers.authorization;
+  const cookieToken = req.cookies?.[constants.config.cookieName];
+  const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+  const token = bearerToken || cookieToken;
 
-  if (!authHeader?.startsWith('Bearer ')) {
+  if (!token) {
     return next(
       new ApiError(constants.statusCodes.UNAUTHORIZED, constants.messages.AUTH.TOKEN_MISSING)
     );
   }
 
   try {
-    const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
     const user = await User.findById(decoded.sub);
 
