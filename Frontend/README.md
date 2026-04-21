@@ -30,15 +30,29 @@ Frontend/
 
 ## Run
 
-Serve this folder with any static server. Examples:
+1. Start the backend first:
+
+```bash
+cd Backend
+npm install
+npm run dev
+```
+
+2. Serve the frontend with any static server. Examples:
 
 - VS Code Live Server
 - `npx serve Frontend`
-- any simple local static server
+- `python -m http.server 5500` from the `Frontend` directory
 
-Recommended backend API base URL:
+3. Open the frontend in the browser and keep the API base URL as:
 
 `http://localhost:5000/api/v1`
+
+4. If you use Live Server or another custom port, make sure the backend `CLIENT_URL` in `Backend/.env` matches that frontend origin. Example:
+
+```env
+CLIENT_URL=http://127.0.0.1:5500
+```
 
 ## Notes
 
