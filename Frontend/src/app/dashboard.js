@@ -27,11 +27,11 @@ const fetchCurrentUser = async () => {
   try {
     const response = await authService.getCurrentUser();
     state.currentUser = response.data;
-    setConnectionStatus(`Authenticated as ${state.currentUser.name}`);
+    setConnectionStatus(`Authenticated as ${state.currentUser.name}`, 'success');
   } catch (error) {
     state.currentUser = null;
     persistToken('');
-    setConnectionStatus(error.message);
+    setConnectionStatus(error.message, 'error');
   }
 
   updateSessionUi();
@@ -68,7 +68,7 @@ const handleAuthSuccess = async (response, label) => {
   persistToken(response.data.token);
   state.currentUser = response.data.user;
   updateSessionUi();
-  setConnectionStatus(`${label} successful`);
+  setConnectionStatus(`${label} successful`, 'success');
   resetTaskForm();
   await fetchTasks();
 };
@@ -92,7 +92,7 @@ const bindAuthEvents = () => {
       elements.registerForm.reset();
       await handleAuthSuccess(response, 'Registration');
     } catch (error) {
-      setConnectionStatus(error.message);
+      setConnectionStatus(error.message, 'error');
     }
   });
 
@@ -105,7 +105,7 @@ const bindAuthEvents = () => {
       elements.loginForm.reset();
       await handleAuthSuccess(response, 'Login');
     } catch (error) {
-      setConnectionStatus(error.message);
+      setConnectionStatus(error.message, 'error');
     }
   });
 
@@ -123,7 +123,7 @@ const bindAuthEvents = () => {
     resetTaskForm();
     updateSessionUi();
     renderTasks();
-    setConnectionStatus('Logged out');
+    setConnectionStatus('Logged out', 'neutral');
   });
 };
 
@@ -148,9 +148,12 @@ const bindTaskEvents = () => {
 
       resetTaskForm();
       await fetchTasks();
-      setConnectionStatus(taskId ? 'Task updated successfully' : 'Task created successfully');
+      setConnectionStatus(
+        taskId ? 'Task updated successfully' : 'Task created successfully',
+        'success'
+      );
     } catch (error) {
-      setConnectionStatus(error.message);
+      setConnectionStatus(error.message, 'error');
     }
   });
 
@@ -161,9 +164,9 @@ const bindTaskEvents = () => {
   elements.refreshTasksButton.addEventListener('click', async () => {
     try {
       await fetchTasks();
-      setConnectionStatus('Tasks refreshed');
+      setConnectionStatus('Tasks refreshed', 'success');
     } catch (error) {
-      setConnectionStatus(error.message);
+      setConnectionStatus(error.message, 'error');
     }
   });
 
@@ -172,9 +175,9 @@ const bindTaskEvents = () => {
 
     try {
       await fetchTasks();
-      setConnectionStatus('Filters applied');
+      setConnectionStatus('Filters applied', 'neutral');
     } catch (error) {
-      setConnectionStatus(error.message);
+      setConnectionStatus(error.message, 'error');
     }
   });
 
@@ -202,9 +205,9 @@ const bindTaskEvents = () => {
       try {
         await taskService.remove(id);
         await fetchTasks();
-        setConnectionStatus('Task deleted successfully');
+        setConnectionStatus('Task deleted successfully', 'success');
       } catch (error) {
-        setConnectionStatus(error.message);
+        setConnectionStatus(error.message, 'error');
       }
     }
   });
