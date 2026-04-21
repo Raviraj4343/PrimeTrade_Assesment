@@ -18,25 +18,52 @@
 
     <main class="app-shell">
       <section class="hero-card">
-        <p class="eyebrow">PrimeTrade Assessment</p>
-        <h1>Task API Console</h1>
-        <p class="hero-copy">
-          A lightweight frontend to verify authentication, RBAC, and task CRUD against the
-          Node.js + Express backend.
-        </p>
+        <div class="hero-layout">
+          <div>
+            <p class="eyebrow">PrimeTrade Assessment</p>
+            <h1>Task Operations Console</h1>
+            <p class="hero-copy">
+              A lightweight dashboard for verifying authentication, protected access, and task
+              management against the Express API.
+            </p>
+          </div>
 
-        <div class="api-config">
-          <label for="apiBaseUrl">API Base URL</label>
-          <input id="apiBaseUrl" type="url" placeholder="http://localhost:5000/api/v1" />
-          <button id="saveApiBaseUrl" class="secondary-button">Save Endpoint</button>
+          <div class="hero-note">
+            <p class="section-kicker">Environment</p>
+            <strong>Vanilla JS Frontend</strong>
+            <span>Structured for maintainability, kept simple for the assessment.</span>
+          </div>
         </div>
 
-        <div class="status-panel">
-          <span class="status-dot"></span>
-          <div>
-            <p class="status-label">Connection Status</p>
-            <p id="connectionStatus">Waiting for configuration</p>
+        <div class="hero-toolbar">
+          <div class="api-config">
+            <label for="apiBaseUrl">API Base URL</label>
+            <input id="apiBaseUrl" type="url" placeholder="http://localhost:5000/api/v1" />
+            <button id="saveApiBaseUrl" class="secondary-button">Save Endpoint</button>
           </div>
+
+          <div id="statusPanel" class="status-panel" data-tone="neutral">
+            <span class="status-dot"></span>
+            <div>
+              <p class="status-label">Connection Status</p>
+              <p id="connectionStatus">Waiting for configuration</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <article class="stat-card">
+            <p class="stat-label">Session</p>
+            <strong id="sessionState">Guest</strong>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Role</p>
+            <strong id="roleValue">-</strong>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Tasks Visible</p>
+            <strong id="taskCountValue">0</strong>
+          </article>
         </div>
       </section>
 
@@ -53,6 +80,7 @@
           <div class="auth-layout">
             <form id="registerForm" class="stack-form">
               <h3>Create Account</h3>
+              <p class="form-copy">Create a standard user account for task ownership flows.</p>
               <input name="name" type="text" placeholder="Full name" required />
               <input name="email" type="email" placeholder="Email address" required />
               <input name="password" type="password" placeholder="Password" required />
@@ -61,6 +89,7 @@
 
             <form id="loginForm" class="stack-form">
               <h3>Sign In</h3>
+              <p class="form-copy">Use JWT-protected access to open the dashboard.</p>
               <input name="email" type="email" placeholder="Email address" required />
               <input name="password" type="password" placeholder="Password" required />
               <button type="submit">Login</button>
@@ -68,8 +97,23 @@
           </div>
 
           <div class="profile-card">
-            <p class="section-kicker">Current Session</p>
-            <pre id="currentUser">No active session</pre>
+            <div class="profile-header">
+              <div>
+                <p class="section-kicker">Current Session</p>
+                <h3 id="currentUserName">No active session</h3>
+              </div>
+              <span id="roleBadge" class="role-badge">guest</span>
+            </div>
+            <div class="profile-grid">
+              <div>
+                <p class="profile-label">Email</p>
+                <p id="currentUserEmail" class="profile-value">-</p>
+              </div>
+              <div>
+                <p class="profile-label">User Id</p>
+                <p id="currentUserId" class="profile-value">-</p>
+              </div>
+            </div>
           </div>
         </article>
 
@@ -82,51 +126,62 @@
             <button id="refreshTasksButton" class="ghost-button" disabled>Refresh</button>
           </div>
 
-          <form id="taskForm" class="stack-form">
-            <h3 id="taskFormTitle">Create Task</h3>
-            <input id="taskId" type="hidden" />
-            <input id="title" name="title" type="text" placeholder="Task title" required />
-            <textarea
-              id="description"
-              name="description"
-              rows="4"
-              placeholder="Task description"
-            ></textarea>
-            <select id="status" name="status">
-              <option value="todo">Todo</option>
-              <option value="in-progress">In Progress</option>
-              <option value="completed">Completed</option>
-            </select>
-            <div class="inline-actions">
-              <button type="submit">Save Task</button>
-              <button id="cancelEditButton" type="button" class="secondary-button" hidden>
-                Cancel Edit
-              </button>
+          <div class="task-workspace">
+            <form id="taskForm" class="stack-form task-form-card">
+              <h3 id="taskFormTitle">Create Task</h3>
+              <p class="form-copy">Keep tasks concise, searchable, and easy to update.</p>
+              <input id="taskId" type="hidden" />
+              <input id="title" name="title" type="text" placeholder="Task title" required />
+              <textarea
+                id="description"
+                name="description"
+                rows="4"
+                placeholder="Task description"
+              ></textarea>
+              <select id="status" name="status">
+                <option value="todo">Todo</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+              <div class="inline-actions">
+                <button type="submit">Save Task</button>
+                <button id="cancelEditButton" type="button" class="secondary-button" hidden>
+                  Cancel Edit
+                </button>
+              </div>
+            </form>
+
+            <div class="task-board">
+              <form id="filtersForm" class="filters-row">
+                <input id="searchInput" type="search" placeholder="Search tasks" />
+                <select id="statusFilter">
+                  <option value="">All statuses</option>
+                  <option value="todo">Todo</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+                <select id="sortFilter">
+                  <option value="latest">Latest</option>
+                  <option value="oldest">Oldest</option>
+                </select>
+                <button type="submit" class="secondary-button">Apply</button>
+              </form>
+
+              <div class="task-board-header">
+                <div>
+                  <p class="section-kicker">Task Feed</p>
+                  <p id="tasksMeta" class="tasks-meta">Sign in to view tasks.</p>
+                </div>
+              </div>
+              <div id="tasksList" class="task-list"></div>
             </div>
-          </form>
-
-          <form id="filtersForm" class="filters-row">
-            <input id="searchInput" type="search" placeholder="Search tasks" />
-            <select id="statusFilter">
-              <option value="">All statuses</option>
-              <option value="todo">Todo</option>
-              <option value="in-progress">In Progress</option>
-              <option value="completed">Completed</option>
-            </select>
-            <select id="sortFilter">
-              <option value="latest">Latest</option>
-              <option value="oldest">Oldest</option>
-            </select>
-            <button type="submit" class="secondary-button">Apply</button>
-          </form>
-
-          <div id="tasksMeta" class="tasks-meta">Sign in to view tasks.</div>
-          <div id="tasksList" class="task-list"></div>
+          </div>
         </article>
       </section>
 
       <section class="panel log-panel">
         <div class="panel-header">
+          <span class="status-dot"></span>
           <div>
             <p class="section-kicker">Request Log</p>
             <h2>Responses</h2>
