@@ -10,6 +10,13 @@ export const errorHandler = (error, req, res, next) => {
   let message = error.message || constants.messages.GENERAL.INTERNAL_ERROR;
   let details = error.details || null;
 
+  if (error.message === 'Not allowed by CORS') {
+    return res.status(constants.statusCodes.FORBIDDEN).json({
+      success: false,
+      message: error.message
+    });
+  }
+
   if (error instanceof mongoose.Error.ValidationError) {
     message = constants.messages.GENERAL.VALIDATION_FAILED;
     details = Object.values(error.errors).map((item) => item.message);
