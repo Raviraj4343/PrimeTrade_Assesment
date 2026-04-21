@@ -23,6 +23,16 @@
   box-sizing: border-box;
 }
 
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -948,6 +958,8 @@ h1 {
   overflow: visible;
   padding: 18px;
   background: linear-gradient(180deg, #fffdf9, #fffaf4);
+  content-visibility: auto;
+  contain-intrinsic-size: 220px;
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
@@ -1079,6 +1091,32 @@ h1 {
     box-shadow 180ms ease;
 }
 
+@supports not (backdrop-filter: blur(2px)) {
+  .topbar,
+  .landing-card,
+  .hero-card,
+  .panel,
+  .auth-card,
+  .profile-card,
+  .task-card,
+  .loader-card,
+  .modal-backdrop {
+    backdrop-filter: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .dashboard-top,
+  .dashboard-toolbar,
+  .task-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .task-list {
+    max-height: none;
+  }
+}
+
 @media (max-width: 920px) {
   .topbar,
   .topbar-actions,
@@ -1115,8 +1153,28 @@ h1 {
     justify-content: flex-start;
   }
 
+  .topbar .nav-link,
+  .topbar .ghost-button,
+  .topbar .button-link,
+  .topbar .button-secondary {
+    flex: 1;
+  }
+
   .filters-row {
     grid-template-columns: 1fr;
+  }
+
+  .task-card-top {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .task-actions {
+    width: 100%;
+  }
+
+  .task-actions button {
+    flex: 1;
   }
 
   .filters-row .secondary-button {
@@ -1135,6 +1193,43 @@ h1 {
 }
 
 @media (max-width: 560px) {
+  .app-shell {
+    width: min(1120px, calc(100% - 20px));
+    margin-top: 12px;
+  }
+
+  .topbar {
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  .brand {
+    gap: 10px;
+  }
+
+  .brand-name {
+    font-size: 1.1rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.74rem;
+  }
+
+  .topbar-actions {
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .topbar .nav-link,
+  .topbar .ghost-button,
+  .topbar .button-link,
+  .topbar .button-secondary {
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
   .auth-card {
     padding: 20px 18px;
     border-radius: 20px;
@@ -1166,5 +1261,29 @@ h1 {
   .confirm-actions .secondary-button,
   .confirm-actions button {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .landing-copy .eyebrow,
+  .landing-copy h1,
+  .landing-copy .hero-copy,
+  .landing-copy .landing-actions {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .background-shape {
+    display: none;
   }
 }
