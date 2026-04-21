@@ -60,7 +60,7 @@ MONGO_URI=mongodb://127.0.0.1:27017/prime-trade
 JWT_SECRET=replace_with_a_strong_secret
 JWT_EXPIRES_IN=1d
 SWAGGER_SERVER_URL=http://localhost:5000
-CLIENT_URL=http://127.0.0.1:5500
+CLIENT_URL=http://localhost:5173
 COOKIE_NAME=prime_trade_token
 COOKIE_EXPIRES_IN_DAYS=1
 BCRYPT_SALT_ROUNDS=10
@@ -158,12 +158,12 @@ Validation and error responses are centralized and return:
 
 ## Frontend Integration
 
-The repository includes a simple client in `Frontend/` that can:
+The repository includes a React client in `Frontend/` that can:
 
 - register and login users
 - fetch the current session via `/auth/me`
 - create, update, delete, and filter tasks
-- display raw API responses for quick testing
+- protect the dashboard route behind JWT authentication
 
 Set `CLIENT_URL` in the backend `.env` to the origin where the frontend is served.
 

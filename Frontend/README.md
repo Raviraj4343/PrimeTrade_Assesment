@@ -1,36 +1,43 @@
 # PrimeTrade Frontend
 
-Supportive frontend built with modular Vanilla JS. It is intentionally lightweight, but the folder structure follows a more production-style separation of concerns so the project can scale beyond a single page script.
+React frontend built with Vite. It provides a clean authentication flow, protected dashboard access, and full CRUD interaction with the backend task API.
 
-## Structure
+## Folder Structure
 
 ```text
 Frontend/
   src/
-    app/        bootstrap and page orchestration
-    config/     constants and environment-like defaults
-    features/   domain-specific services for auth and tasks
-    services/   shared API client
-    store/      application state
-    styles/     global stylesheet
-    ui/         DOM bindings and render helpers
-    utils/      storage utilities
-    main.js     frontend entry point
+    components/
+      auth/
+      common/
+      layout/
+      tasks/
+    constants/
+    context/
+    pages/
+    routes/
+    services/
+    styles/
+    App.jsx
+    main.jsx
+  .env.example
   index.html
+  package.json
+  vite.config.js
 ```
 
-## Supported Flows
+## Features
 
-- Register users
-- Log in users
-- Access a protected dashboard via JWT-authenticated requests
-- Perform task CRUD operations
-- Show success and error feedback from API responses
-- Inspect the current authenticated user
+- React Router based pages: Landing, Login, Register, Dashboard
+- Protected dashboard route with JWT check
+- Authentication state managed with React context and hooks
+- Axios client with token attachment and `401` handling
+- Task CRUD with loading, success, and error states
+- Responsive, minimal UI with reusable components
 
-## Run
+## Setup
 
-1. Start the backend first:
+1. Start the backend:
 
 ```bash
 cd Backend
@@ -38,23 +45,41 @@ npm install
 npm run dev
 ```
 
-2. Serve the frontend with any static server. Examples:
+2. Start the frontend:
 
-- VS Code Live Server
-- `npx serve Frontend`
-- `python -m http.server 5500` from the `Frontend` directory
+```bash
+cd Frontend
+npm install
+cp .env.example .env
+npm run dev
+```
 
-3. Open the frontend in the browser and keep the API base URL as:
+3. Open the Vite app shown in the terminal, usually:
 
-`http://localhost:5000/api/v1`
+`http://localhost:5173`
 
-4. If you use Live Server or another custom port, make sure the backend `CLIENT_URL` in `Backend/.env` matches that frontend origin. Example:
+4. Update backend CORS if needed:
 
 ```env
-CLIENT_URL=http://127.0.0.1:5500
+CLIENT_URL=http://localhost:5173
 ```
+
+## API Integration
+
+- Base URL is read from `VITE_API_BASE_URL`
+- JWT token is stored in `localStorage`
+- Axios automatically attaches the token to outgoing requests
+- If the backend returns `401 Unauthorized`, the token is cleared and the user is redirected to `/login`
+
+## Authentication Flow
+
+1. User registers or logs in from the React pages
+2. Backend returns user data plus JWT
+3. Frontend stores the token and updates auth context
+4. Protected routes render only when a valid session exists
+5. On refresh, the app calls `/auth/me` to restore the session if the token is still valid
 
 ## Notes
 
-- The UI stores the token in `localStorage` for demo convenience.
-- The backend also supports secure auth cookies, which is the preferred production browser pattern.
+- This implementation keeps the frontend minimal but aligned with real-world structure
+- For stronger browser security in production, prefer secure HTTP-only cookies over localStorage when the backend/session model supports it

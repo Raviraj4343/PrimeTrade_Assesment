@@ -1,13 +1,13 @@
 # PrimeTrade Assessment
 
-PrimeTrade is a full-stack assessment project with a production-style Node.js/Express backend and a lightweight frontend client that demonstrates authentication and task CRUD integration.
+PrimeTrade is a full-stack assessment project with a production-style Node.js/Express backend and a React.js frontend built with Vite for authentication and task CRUD integration.
 
 ## Repository Structure
 
 ```text
 PrimeTrade/
   Backend/   REST API with MongoDB, JWT auth, RBAC, validation, Swagger
-  Frontend/  Minimal UI for login, session view, and task management
+  Frontend/  React frontend with protected routes, Axios API integration, and task management
 ```
 
 ## What’s Included
@@ -18,7 +18,7 @@ PrimeTrade/
 - Role-based access control for `user` and `admin`
 - Security middleware: `cors`, `helmet`, `hpp`, `cookie-parser`, `express-rate-limit`
 - Swagger documentation for API exploration
-- Basic frontend UI connected to the live APIs
+- React frontend with login, register, protected dashboard, and task CRUD
 - README documentation and scalability notes
 
 ## Quick Start
@@ -34,14 +34,21 @@ npm run dev
 
 ### Frontend
 
-Serve the `Frontend` directory with any static server and point it to:
+```bash
+cd Frontend
+npm install
+cp .env.example .env
+npm run dev
+```
 
-`http://localhost:5000/api/v1`
+The Vite app usually runs on:
 
-If you use VS Code Live Server, set the backend `CLIENT_URL` accordingly, for example:
+`http://localhost:5173`
+
+Set the backend `CLIENT_URL` accordingly, for example:
 
 ```env
-CLIENT_URL=http://127.0.0.1:5500
+CLIENT_URL=http://localhost:5173
 ```
 
 ## Main Deliverables
