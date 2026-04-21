@@ -14,7 +14,11 @@ const Navbar = () => {
   return (
     <header className="topbar">
       <Link className="brand" to="/">
-        {APP_NAME}
+        <span className="brand-mark">P</span>
+        <span className="brand-copy">
+          <span className="brand-name">{APP_NAME}</span>
+          <span className="brand-subtitle">Task Workspace</span>
+        </span>
       </Link>
 
       <nav className="topbar-actions">
@@ -32,7 +36,7 @@ const Navbar = () => {
             <NavLink className="ghost-button nav-link" to="/login">
               Sign In
             </NavLink>
-            <NavLink className="nav-link button-link" to="/register">
+            <NavLink className="nav-link button-link topbar-primary" to="/register">
               Sign Up
             </NavLink>
           </>
