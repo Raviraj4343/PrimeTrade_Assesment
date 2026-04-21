@@ -31,6 +31,16 @@ export const registerUser = async ({ name, email, password }) => {
   };
 };
 
+export const getCurrentUser = async (userId) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(constants.statusCodes.UNAUTHORIZED, constants.messages.AUTH.TOKEN_INVALID);
+  }
+
+  return sanitizeUser(user);
+};
+
 export const loginUser = async ({ email, password }) => {
   const user = await User.findOne({ email }).select('+password');
 
