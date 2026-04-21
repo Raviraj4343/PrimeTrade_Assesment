@@ -214,9 +214,11 @@ const bindTaskEvents = () => {
 };
 
 const bindUtilityEvents = () => {
-  elements.clearLogButton.addEventListener('click', () => {
-    elements.responseLog.textContent = 'Ready.';
-  });
+  if (elements.clearLogButton && elements.responseLog) {
+    elements.clearLogButton.addEventListener('click', () => {
+      elements.responseLog.textContent = 'Ready.';
+    });
+  }
 };
 
 export const bootstrapDashboard = async () => {

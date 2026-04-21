@@ -23,15 +23,8 @@
             <p class="eyebrow">PrimeTrade Assessment</p>
             <h1>Task Operations Console</h1>
             <p class="hero-copy">
-              A lightweight dashboard for verifying authentication, protected access, and task
-              management against the Express API.
+              A clean dashboard for authentication and task management.
             </p>
-          </div>
-
-          <div class="hero-note">
-            <p class="section-kicker">Environment</p>
-            <strong>Vanilla JS Frontend</strong>
-            <span>Structured for maintainability, kept simple for the assessment.</span>
           </div>
         </div>
 
@@ -49,21 +42,6 @@
               <p id="connectionStatus">Waiting for configuration</p>
             </div>
           </div>
-        </div>
-
-        <div class="hero-stats">
-          <article class="stat-card">
-            <p class="stat-label">Session</p>
-            <strong id="sessionState">Guest</strong>
-          </article>
-          <article class="stat-card">
-            <p class="stat-label">Role</p>
-            <strong id="roleValue">-</strong>
-          </article>
-          <article class="stat-card">
-            <p class="stat-label">Tasks Visible</p>
-            <strong id="taskCountValue">0</strong>
-          </article>
         </div>
       </section>
 
@@ -99,7 +77,7 @@
           <div class="profile-card">
             <div class="profile-header">
               <div>
-                <p class="section-kicker">Current Session</p>
+                <p class="section-kicker">Session</p>
                 <h3 id="currentUserName">No active session</h3>
               </div>
               <span id="roleBadge" class="role-badge">guest</span>
@@ -110,8 +88,8 @@
                 <p id="currentUserEmail" class="profile-value">-</p>
               </div>
               <div>
-                <p class="profile-label">User Id</p>
-                <p id="currentUserId" class="profile-value">-</p>
+                <p class="profile-label">Tasks</p>
+                <p id="taskCountValue" class="profile-value">0</p>
               </div>
             </div>
           </div>
@@ -177,18 +155,6 @@
             </div>
           </div>
         </article>
-      </section>
-
-      <section class="panel log-panel">
-        <div class="panel-header">
-          <span class="status-dot"></span>
-          <div>
-            <p class="section-kicker">Request Log</p>
-            <h2>Responses</h2>
-          </div>
-          <button id="clearLogButton" class="ghost-button">Clear</button>
-        </div>
-        <pre id="responseLog">Ready.</pre>
       </section>
     </main>
 

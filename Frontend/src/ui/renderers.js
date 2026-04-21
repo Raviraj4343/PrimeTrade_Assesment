@@ -2,6 +2,10 @@ import { state } from '../store/state.js';
 import { elements } from './elements.js';
 
 export const logResponse = (label, payload) => {
+  if (!elements.responseLog) {
+    return;
+  }
+
   const stamp = new Date().toLocaleTimeString();
   elements.responseLog.textContent = `[${stamp}] ${label}\n${JSON.stringify(payload, null, 2)}\n\n${elements.responseLog.textContent}`;
 };
@@ -15,12 +19,12 @@ export const updateSessionUi = () => {
   const isAuthenticated = Boolean(state.token && state.currentUser);
   elements.logoutButton.disabled = !isAuthenticated;
   elements.refreshTasksButton.disabled = !isAuthenticated;
-  elements.sessionState.textContent = isAuthenticated ? 'Authenticated' : 'Guest';
-  elements.roleValue.textContent = isAuthenticated ? state.currentUser.role : '-';
   elements.roleBadge.textContent = isAuthenticated ? state.currentUser.role : 'guest';
   elements.currentUserName.textContent = isAuthenticated ? state.currentUser.name : 'No active session';
   elements.currentUserEmail.textContent = isAuthenticated ? state.currentUser.email : '-';
-  elements.currentUserId.textContent = isAuthenticated ? state.currentUser.id : '-';
+  if (!isAuthenticated) {
+    elements.taskCountValue.textContent = '0';
+  }
 };
 
 export const resetTaskForm = () => {
