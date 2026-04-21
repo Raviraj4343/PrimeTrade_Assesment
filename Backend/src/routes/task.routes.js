@@ -11,6 +11,7 @@ import { validate } from '../middleware/validate.middleware.js';
 import {
   createTaskSchema,
   mongoIdParamSchema,
+  taskQuerySchema,
   updateTaskSchema
 } from '../validations/task.validation.js';
 
@@ -40,7 +41,7 @@ router.use(authenticate);
  */
 router
   .route('/')
-  .get(getTasksController)
+  .get(validate(taskQuerySchema, 'query'), getTasksController)
   .post(validate(createTaskSchema), createTaskController);
 
 /**
