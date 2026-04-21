@@ -32,8 +32,11 @@ const RegisterPage = () => {
   return (
     <section className="page-shell auth-page">
       <AuthForm
+        description="Join the workspace to organize tasks, keep momentum visible, and move work forward without the noise."
         errorMessage={errorMessage}
         fields={registerFields}
+        footerNote="Use at least one password you do not reuse elsewhere."
+        highlight="Quick setup. Clear progress. One calm place to work."
         loading={isSubmitting}
         onSubmit={handleSubmit}
         submitLabel="Create Account"

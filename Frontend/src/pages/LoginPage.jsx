@@ -32,8 +32,11 @@ const LoginPage = () => {
   return (
     <section className="page-shell auth-page">
       <AuthForm
+        description="Pick up where you left off, review your priorities, and get straight back into the flow."
         errorMessage={errorMessage}
         fields={loginFields}
+        footerNote="Your session stays focused on the tasks that matter most."
+        highlight="Fast sign-in with a cleaner, easier-to-scan layout."
         loading={isSubmitting}
         onSubmit={handleSubmit}
         submitLabel="Sign In"

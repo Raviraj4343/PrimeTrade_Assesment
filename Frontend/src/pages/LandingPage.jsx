@@ -4,7 +4,7 @@ const LandingPage = () => (
   <section className="landing-card">
     <div className="landing-copy">
       <p className="eyebrow">PrimeTrade Workspace</p>
-      <h1>Task management, without the clutter.</h1>
+      <h1>Task management.</h1>
       <p className="hero-copy">
         Stay focused with one simple workspace for planning, tracking, and finishing what matters.
       </p>
